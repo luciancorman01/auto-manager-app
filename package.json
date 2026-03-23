@@ -1,0 +1,26 @@
+{
+  "name": "auto-manager-app",
+  "version": "1.0.0",
+  "description": "Platforma all-in-one pentru managementul auto: alerte automate (ITP/RCA), monitorizarea mentenantei, comparator de preturi pentru asigurari si sistem de programsri online in service.",
+  "main": "index.js",
+  "scripts": {
+    "server": "npm start --prefix server",
+    "client": "npm run dev --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luciancorman01/auto-manager-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/luciancorman01/auto-manager-app/issues"
+  },
+  "homepage": "https://github.com/luciancorman01/auto-manager-app#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
