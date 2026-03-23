@@ -16,25 +16,23 @@ După ce ai clonat repository-ul, trebuie să instalezi "piesele" (dependințele
 
 Deschide un terminal în VS Code și rulează:
 
-### 1. Instalare în folderul Principal (Root)
-Acesta instalează instrumentul care pornește și Front-end-ul și Back-end-ul deodată.
-```bash
+1. Instalare în Rădăcină (Root)
+Instalează instrumentele de gestionare a proiectului:
+
+Bash
 npm install
-
-### 2. Instalare pentru Client (Frontend - React)
-
-
+2. Instalare Frontend (React)
+Bash
 cd client
 npm install
 cd ..
-
-### 3. Instalare pentru Server (Backend - Node.js)
-
+3. Instalare Backend (Node.js)
+Bash
 cd server
 npm install
 cd ..
+🏎️ Cum pornești aplicația?
+Am configurat un script care pornește ambele servere (Frontend și Backend) simultan. Din folderul principal al proiectului, rulează:
 
-Cum pornești aplicația?
-Nu este nevoie să deschizi două terminale. Am configurat o comandă "magică" în folderul principal. Asigură-te că ești în folderul rădăcină (auto-manager-app) și scrie:
-
-npm run dev 
+Bash
+npm run dev
