@@ -1,0 +1,166 @@
+.fleet-page {
+  min-height: 100vh;
+  width: 100%;
+  background: #000;
+  color: white;
+  display: flex;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.fleet-content {
+  flex: 1;
+  padding: 48px 56px;
+}
+
+.fleet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 36px;
+}
+
+.fleet-header h1 {
+  font-size: 34px;
+  font-weight: 400;
+  margin-bottom: 6px;
+}
+
+.fleet-header p {
+  color: #a8a8a8;
+}
+
+.search-box {
+  width: 320px;
+  height: 36px;
+  background: #6c7086;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+}
+
+.search-box input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+}
+
+.search-box input::placeholder {
+  color: #ddd;
+}
+
+.fleet-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 36px;
+}
+
+.fleet-top span {
+  color: #8fa0ff;
+}
+
+.add-btn {
+  padding: 10px 22px;
+  border-radius: 20px;
+  border: 1px solid #8fa0ff;
+  background: #596082;
+  color: white;
+  cursor: pointer;
+}
+
+.cars-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 28px;
+}
+
+.car-card {
+  background: #22232e;
+  border: 1px solid #9ba3d9;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 0 22px rgba(60, 80, 255, 0.2);
+}
+
+.car-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.car-card h2 {
+  padding: 20px 20px 10px;
+  font-weight: 400;
+}
+
+.car-details {
+  padding: 0 20px 20px;
+}
+
+.car-details p {
+  margin-bottom: 12px;
+  color: #d4d4d4;
+}
+
+.car-details strong {
+  margin-right: 6px;
+  color: white;
+}
+
+.details-btn {
+  width: calc(100% - 40px);
+  margin: 0 20px 20px;
+  height: 44px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(90deg, #596082, #26338f);
+  color: white;
+  cursor: pointer;
+}
+
+/* TABLETĂ */
+@media (max-width: 1024px) {
+
+  .fleet-content {
+    padding: 36px 28px;
+  }
+
+  .cars-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* MOBIL */
+@media (max-width: 700px) {
+
+  .fleet-page {
+    flex-direction: column;
+  }
+
+  .fleet-content {
+    padding: 24px 18px;
+  }
+
+  .fleet-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+  }
+
+  .search-box {
+    width: 100%;
+  }
+
+  .fleet-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+  }
+
+  .car-card img {
+    height: 190px;
+  }
+}
