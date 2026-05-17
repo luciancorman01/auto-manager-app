@@ -1,23 +1,10 @@
-const express = require('express');
-const cors = require('cors');
-const app = express();
-const PORT = 5000;
+// index.js
+require("dotenv").config();
+const app = require("./src/app");
 
-app.use(cors()); // Foarte important pentru ca React să poată vorbi cu Node
-app.use(express.json());
-
-// Date de test (Mock data)
-const carStatus = {
-    brand: "Dacia Logan",
-    itp: "Expiră în 15 zile",
-    rca: "Valid până la 12.12.2026",
-    oilChange: "Peste 3500 km"
-};
-
-app.get('/api/car-info', (req, res) => {
-    res.json(carStatus);
-});
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-    console.log(`[Server] Poruncile sunt primite pe portul ${PORT}`);
+  console.log(`🚀 Server pornit pe http://localhost:${PORT}`);
+  console.log(`📋 Health check: http://localhost:${PORT}/api/health`);
 });
