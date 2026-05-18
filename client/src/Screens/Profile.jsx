@@ -1,7 +1,19 @@
 import "./Profile.css";
 import Sidebar from "../components/Sidebar";
+import { useState } from "react";
 
 function Profile() {
+const [isEditing, setIsEditing] = useState(false);
+
+const [name, setName] = useState("User Name");
+
+const [email, setEmail] = useState("username@gmail.com");
+
+const [phone, setPhone] = useState("+40 7xx xxx xxx");
+
+const [address, setAddress] = useState(
+  "strada x-ulescu, nr. 10"
+);
 
   return (
     <div className="profile-page">
@@ -27,9 +39,12 @@ function Profile() {
 
         <section className="profile-card">
 
-          <div className="edit-icon">
-            ✎
-          </div>
+<div
+  className="edit-icon"
+  onClick={() => setIsEditing(!isEditing)}
+>
+  ✎
+</div>
 
           <h2>User Account Details</h2>
 
@@ -39,13 +54,37 @@ function Profile() {
               👤
             </div>
 
-            <div className="profile-info">
+<div className="profile-info">
 
-              <h3>User Name</h3>
+  {isEditing ? (
 
-              <p>username@gmail.com</p>
+    <>
+      <input
+        className="profile-input"
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
 
-            </div>
+      <input
+        className="profile-input"
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+    </>
+
+  ) : (
+
+    <>
+      <h3>{name}</h3>
+
+      <p>{email}</p>
+    </>
+
+  )}
+
+</div>
 
           </div>
 
@@ -61,20 +100,68 @@ function Profile() {
 
             <h2>Contact Informations</h2>
 
-            <div className="contact-item">
-              <span>📞</span>
-              <p>+40 7xx xxx xxx</p>
-            </div>
+<div className="contact-item">
 
-            <div className="contact-item">
-              <span>✉</span>
-              <p>username@gmail.com</p>
-            </div>
+  <span>📞</span>
 
-            <div className="contact-item">
-              <span>📍</span>
-              <p>strada x-ulescu, nr. 10</p>
-            </div>
+  {isEditing ? (
+
+    <input
+      className="profile-input small-input"
+      type="text"
+      value={phone}
+      onChange={(e) => setPhone(e.target.value)}
+    />
+
+  ) : (
+
+    <p>{phone}</p>
+
+  )}
+
+</div>
+
+<div className="contact-item">
+
+  <span>✉</span>
+
+  {isEditing ? (
+
+    <input
+      className="profile-input small-input"
+      type="email"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+    />
+
+  ) : (
+
+    <p>{email}</p>
+
+  )}
+
+</div>
+
+<div className="contact-item">
+
+  <span>📍</span>
+
+  {isEditing ? (
+
+    <input
+      className="profile-input small-input"
+      type="text"
+      value={address}
+      onChange={(e) => setAddress(e.target.value)}
+    />
+
+  ) : (
+
+    <p>{address}</p>
+
+  )}
+
+</div>
 
           </div>
 
