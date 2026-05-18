@@ -7,55 +7,6 @@
   font-family: Georgia, "Times New Roman", serif;
 }
 
-.sidebar {
-  width: 230px;
-  min-height: 100vh;
-  border-right: 1px solid #9ba3d9;
-  background: linear-gradient(160deg, #191a25, #020202);
-  padding: 32px 24px;
-  display: flex;
-  flex-direction: column;
-}
-
-.logo {
-  font-size: 18px;
-  margin-bottom: 90px;
-}
-
-.menu {
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-}
-
-.menu a {
-  color: white;
-  text-decoration: none;
-  font-size: 15px;
-}
-
-.user-box {
-  margin-top: auto;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 14px;
-}
-
-.avatar {
-  width: 44px;
-  height: 44px;
-  border: 1px solid #8fa0ff;
-  border-radius: 50%;
-}
-
-.footer-text {
-  font-size: 10px;
-  color: #9b9b9b;
-  text-align: center;
-  margin-top: 25px;
-}
-
 .dashboard-content {
   flex: 1;
   width: calc(100% - 230px);
@@ -242,6 +193,7 @@
   background:
     linear-gradient(rgba(20, 20, 20, 0.45), rgba(20, 20, 20, 0.45)),
     url("https://tile.openstreetmap.org/7/70/45.png");
+
   background-size: cover;
   background-position: center;
   margin-bottom: 20px;
@@ -262,6 +214,7 @@
 
 /* TABLETĂ */
 @media (max-width: 1024px) {
+
   .dashboard-content {
     padding: 36px 32px;
   }
@@ -277,31 +230,9 @@
 
 /* MOBIL */
 @media (max-width: 700px) {
+
   .dashboard-page {
     flex-direction: column;
-  }
-
-  .sidebar {
-    width: 100%;
-    min-height: auto;
-    border-right: none;
-    border-bottom: 1px solid #9ba3d9;
-    padding: 20px;
-  }
-
-  .logo {
-    margin-bottom: 24px;
-  }
-
-  .menu {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-
-  .user-box,
-  .footer-text {
-    display: none;
   }
 
   .dashboard-content {

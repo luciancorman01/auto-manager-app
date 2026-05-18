@@ -1,0 +1,119 @@
+.details-page {
+  min-height: 100vh;
+  width: 100%;
+  background: #000;
+  color: white;
+  display: flex;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.details-content {
+  flex: 1;
+  padding: 48px 56px;
+}
+
+.details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 42px;
+}
+
+.details-header h1 {
+  font-size: 36px;
+  font-weight: 400;
+}
+
+.search-box {
+  width: 320px;
+  height: 36px;
+  background: #6c7086;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+}
+
+.search-box input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+}
+
+.car-details-box {
+  background: #22232e;
+  border: 1px solid #9ba3d9;
+  border-radius: 20px;
+  padding: 28px;
+  margin-bottom: 40px;
+}
+
+.car-details-box h2 {
+  margin-bottom: 28px;
+  font-weight: 400;
+}
+
+.car-selects {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.car-selects select {
+  height: 46px;
+  border: none;
+  border-radius: 18px;
+  background: #666a80;
+  color: white;
+  padding: 0 16px;
+}
+
+.documents-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+.doc-card {
+  background: #22232e;
+  border: 1px solid #9ba3d9;
+  border-radius: 20px;
+  padding: 26px;
+}
+
+.doc-card h3 {
+  font-size: 32px;
+  font-weight: 400;
+  margin-bottom: 28px;
+}
+
+.doc-card label {
+  display: block;
+  margin-bottom: 10px;
+  margin-top: 18px;
+}
+
+.doc-card input {
+  width: 100%;
+  height: 46px;
+  border: none;
+  border-radius: 18px;
+  background: #666a80;
+  color: white;
+  padding: 0 16px;
+}
+
+.fleet-btn {
+  display: block;
+  margin: 42px auto 0;
+  width: 220px;
+  height: 58px;
+  border: 1px solid #1d36c9;
+  border-radius: 18px;
+  background: linear-gradient(90deg, #70789a, #061370);
+  color: white;
+  font-size: 26px;
+  cursor: pointer;
+}

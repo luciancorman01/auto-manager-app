@@ -1,0 +1,60 @@
+.sidebar {
+  width: 230px;
+  min-height: 100vh;
+  border-right: 1px solid #9ba3d9;
+  background: linear-gradient(160deg, #191a25, #020202);
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo {
+  font-size: 18px;
+  margin-bottom: 90px;
+  color: white;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.menu-link {
+  color: white;
+  text-decoration: none;
+  font-size: 15px;
+  opacity: 0.7;
+  transition: 0.2s;
+}
+
+.menu-link:hover {
+  opacity: 1;
+}
+
+.active-link {
+  opacity: 1;
+  color: #8fa0ff;
+}
+
+.user-box {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: white;
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border: 1px solid #8fa0ff;
+  border-radius: 50%;
+}
+
+.footer-text {
+  font-size: 10px;
+  color: #9b9b9b;
+  text-align: center;
+  margin-top: 25px;
+}
