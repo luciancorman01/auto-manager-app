@@ -1,0 +1,278 @@
+.profile-page {
+  min-height: 100vh;
+  width: 100%;
+  background: #000;
+  display: flex;
+  color: white;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.profile-content {
+  flex: 1;
+  padding: 48px;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.profile-header h1 {
+  font-size: 32px;
+  font-weight: 400;
+}
+
+.search-box {
+  width: 320px;
+  height: 42px;
+  border-radius: 22px;
+  background: #696b87;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+}
+
+.search-box input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+}
+
+.search-box input::placeholder {
+  color: #d6d6d6;
+}
+
+.profile-card {
+  width: 100%;
+  background: #22232f;
+  border: 1px solid #9ba3d9;
+  border-radius: 18px;
+  padding: 24px;
+  position: relative;
+  margin-bottom: 28px;
+}
+
+.profile-card h2,
+.info-card h2 {
+  color: #c6c3f2;
+  font-size: 18px;
+  font-weight: 400;
+  margin-bottom: 22px;
+}
+
+.edit-icon {
+  position: absolute;
+  top: 22px;
+  right: 24px;
+  font-size: 22px;
+  color: #bfc5ff;
+  cursor: pointer;
+}
+
+.profile-user {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.profile-avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 1px solid #bfc5ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+}
+
+.profile-info h3 {
+  font-size: 32px;
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+
+.profile-info p {
+  font-size: 22px;
+  color: #d9d9d9;
+}
+
+.profile-bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+
+.info-card {
+  background: #22232f;
+  border: 1px solid #9ba3d9;
+  border-radius: 18px;
+  padding: 22px;
+  min-height: 210px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 26px;
+}
+
+.contact-item span {
+  font-size: 17px;
+}
+
+.contact-item p {
+  font-size: 17px;
+}
+
+.preference-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 34px;
+}
+
+.preference-row p {
+  font-size: 17px;
+}
+
+.preference-row select {
+  background: transparent;
+  border: none;
+  color: #bfc5ff;
+  font-size: 17px;
+  outline: none;
+}
+
+.logout-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 42px;
+}
+
+.logout-btn {
+  width: 220px;
+  height: 58px;
+  border-radius: 18px;
+  border: 1px solid #8fa0ff;
+  background: linear-gradient(90deg, #474a5d, #001489);
+  color: white;
+  font-size: 18px;
+  font-family: Georgia, "Times New Roman", serif;
+  cursor: pointer;
+}
+
+/* SWITCH */
+
+.switch {
+  position: relative;
+  width: 54px;
+  height: 28px;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  inset: 0;
+  background: #6a6c87;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  left: 3px;
+  top: 3px;
+  border-radius: 50%;
+  background: white;
+  transition: 0.3s;
+}
+
+.switch input:checked + .slider::before {
+  transform: translateX(26px);
+}
+
+.switch input:checked + .slider {
+  background: #8fa0ff;
+}
+
+/* TABLET */
+
+@media (max-width: 1024px) {
+
+  .profile-content {
+    padding: 32px;
+  }
+
+  .profile-bottom {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+  .profile-page {
+    flex-direction: column;
+  }
+
+  .profile-content {
+    padding: 20px;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .profile-header h1 {
+    font-size: 36px;
+  }
+
+  .search-box {
+    width: 100%;
+  }
+
+  .profile-user {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .profile-info h3 {
+    font-size: 28px;
+  }
+
+  .profile-info p {
+    font-size: 18px;
+  }
+
+  .contact-item p,
+  .preference-row p {
+    font-size: 18px;
+  }
+
+  .logout-container {
+    justify-content: center;
+  }
+
+  .logout-btn {
+    width: 100%;
+    font-size: 16px;
+  }
+
+}
