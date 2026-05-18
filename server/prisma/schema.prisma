@@ -1,0 +1,79 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int       @id @default(autoincrement())
+  nume_complet String
+  email        String    @unique
+  parola       String
+  poza_profil  String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  vehicles     Vehicle[]
+
+  @@map("users")
+}
+
+model Vehicle {
+  id               Int       @id @default(autoincrement())
+  user_id          Int
+  marca            String
+  model            String
+  nr_inmatriculare String
+  vin              String    @unique
+  an_fabricatie    Int
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  user             User            @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  documents        Document[]
+  serviceHistory   ServiceHistory[]
+
+  @@map("vehicles")
+}
+
+
+
+model Document {
+  id             Int          @id @default(autoincrement())
+  vehicle_id     Int
+  tip            DocumentType
+  data_expirare  DateTime
+  pret_platit    Float?
+  companie       String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  vehicle        Vehicle      @relation(fields: [vehicle_id], references: [id], onDelete: Cascade)
+
+  @@map("documents")
+}
+enum DocumentType {
+  RCA
+  ITP
+  Rovinieta
+}
+
+model ServiceHistory {
+  id          Int      @id @default(autoincrement())
+  vehicle_id  Int
+  data        DateTime
+  descriere   String
+  kilometri   Int
+  cost_total  Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  vehicle     Vehicle  @relation(fields: [vehicle_id], references: [id], onDelete: Cascade)
+
+  @@map("service_history")
+}
