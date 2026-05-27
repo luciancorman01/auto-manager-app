@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../api";
+import { useUser } from "../context/UserContext";
 
 function Register() {
   const [numeComplet, setNumeComplet] = useState("");
@@ -11,6 +12,7 @@ function Register() {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+  const { refreshUser } = useUser();
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -35,8 +37,7 @@ function Register() {
       });
 
       localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user", JSON.stringify(response.data.user));
-
+      await refreshUser();
       navigate("/dashboard");
     } catch (err) {
       setError(err.response?.data?.message || "Eroare la înregistrare.");

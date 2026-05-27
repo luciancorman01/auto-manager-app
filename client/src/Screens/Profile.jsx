@@ -1,35 +1,19 @@
 import "./Profile.css";
 import Sidebar from "../components/Sidebar";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../api";
+import { useUser } from "../context/UserContext";
 
 function Profile() {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const response = await api.get("/auth/me");
-        setUser(response.data);
-      } catch (err) {
-        console.error("Eroare la fetch profil:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProfile();
-  }, []);
+  const { user, loadingUser, clearUser } = useUser();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    clearUser();
     navigate("/login");
   };
 
-  if (loading) {
+  if (loadingUser) {
     return (
       <div className="profile-page">
         <Sidebar />
@@ -90,13 +74,6 @@ function Profile() {
                 <input type="checkbox" />
                 <span className="slider"></span>
               </label>
-            </div>
-            <div className="preference-row">
-              <p>Account Language</p>
-              <select>
-                <option>English</option>
-                <option>Romanian</option>
-              </select>
             </div>
           </div>
         </section>

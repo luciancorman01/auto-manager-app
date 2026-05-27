@@ -89,18 +89,24 @@
   height: 100%;
   background: #26338f;
   border-radius: 20px;
+  transition: width 0.4s ease;
 }
 
-.insurance {
-  width: 88%;
+/* Clase dinamice pentru starea documentelor */
+.progress-fill.ok {
+  background: #45ad29;
 }
 
-.itp {
-  width: 75%;
+.progress-fill.warning {
+  background: #d5d000;
 }
 
-.vigneta {
-  width: 67%;
+.progress-fill.critical {
+  background: #ff6b00;
+}
+
+.progress-fill.expired {
+  background: #ff1e00;
 }
 
 .alert-card p {

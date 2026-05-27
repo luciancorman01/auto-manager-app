@@ -8,6 +8,7 @@ function MyFleet() {
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const fetchVehicles = async () => {
     try {
@@ -37,6 +38,17 @@ function MyFleet() {
   const formatDate = (dateStr) =>
     dateStr ? new Date(dateStr).toLocaleDateString("ro-RO") : "Necompletat";
 
+  const filteredVehicles = vehicles.filter((v) => {
+    const q = searchQuery.toLowerCase();
+    return (
+      v.marca.toLowerCase().includes(q) ||
+      v.model.toLowerCase().includes(q) ||
+      v.nr_inmatriculare.toLowerCase().includes(q) ||
+      v.vin.toLowerCase().includes(q) ||
+      String(v.an_fabricatie).includes(q)
+    );
+  });
+
   return (
     <div className="fleet-page">
       <Sidebar />
@@ -45,7 +57,12 @@ function MyFleet() {
         <div className="fleet-header">
           <div><h1>My Fleet</h1></div>
           <div className="search-box">
-            <input type="text" placeholder="Search vehicle..." />
+            <input
+              type="text"
+              placeholder="Search vehicle..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
             <span>⌕</span>
           </div>
         </div>
@@ -60,8 +77,14 @@ function MyFleet() {
         {loading && <p>Se încarcă flota...</p>}
         {error && <p className="error-message">{error}</p>}
 
+        {!loading && !error && filteredVehicles.length === 0 && (
+          <p style={{ color: "#aaa", marginTop: "20px" }}>
+            {searchQuery ? "Nicio mașină găsită pentru căutarea ta." : "Nu ai nicio mașină adăugată."}
+          </p>
+        )}
+
         <section className="cars-grid">
-          {vehicles.map((vehicle) => {
+          {filteredVehicles.map((vehicle) => {
             const rcaDoc = vehicle.documents?.find((d) => d.tip === "RCA");
             const itpDoc = vehicle.documents?.find((d) => d.tip === "ITP");
             const rovinietaDoc = vehicle.documents?.find((d) => d.tip === "Rovinieta");
@@ -69,8 +92,8 @@ function MyFleet() {
             return (
               <div className="car-card" key={vehicle.id}>
                 <img
-                  src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8"
-                  alt="car"
+                  src={vehicle.poza || "https://images.unsplash.com/photo-1494976388531-d1058494cdd8"}
+                  alt={`${vehicle.marca} ${vehicle.model}`}
                 />
                 <h2>{vehicle.marca} {vehicle.model}</h2>
                 <div className="car-details">
