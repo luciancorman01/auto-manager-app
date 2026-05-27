@@ -62,14 +62,36 @@
 }
 
 .car-selects select {
-  height: 46px;
-  border: none;
-  border-radius: 18px;
-  background: #666a80;
-  color: white;
-  padding: 0 16px;
-}
+  width: 100%;
 
+  height: 46px;
+
+  border: none;
+
+  border-radius: 18px;
+
+  background: #666a80;
+
+  color: white;
+
+  padding: 0 16px;
+
+  font-size: 15px;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  outline: none;
+
+  cursor: pointer;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  overflow: hidden;
+
+  box-shadow: none;
+}
 .documents-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -116,4 +138,17 @@
   color: white;
   font-size: 26px;
   cursor: pointer;
+}
+
+select option[disabled] {
+  display: none;
+}
+
+.car-selects select option {
+  background: #666a80;
+  color: white;
+}
+
+.car-selects select::-ms-expand {
+  display: none;
 }

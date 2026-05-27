@@ -6,6 +6,7 @@ import MyFleet from "./Screens/MyFleet";
 import VehicleDetails from "./Screens/VehicleDetails";
 import Profile from "./Screens/Profile";
 import Service from "./Screens/Service";
+import Select from "react-select";
 import "./App.css";
 
 function App() {
