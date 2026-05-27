@@ -152,7 +152,12 @@
 .priority-bar {
   height: 34px;
   border-radius: 20px;
-  background: linear-gradient(90deg, #45ad29, #d5d000, #ff1e00);
+  background: linear-gradient(
+    90deg,
+    #45ad29,
+    #d5d000,
+    #ff1e00
+  );
   margin: 24px 0;
 }
 
@@ -186,17 +191,19 @@
   float: right;
 }
 
+/* MAP */
+
 .map-box {
   height: 235px;
   border: 1px solid #9ba3d9;
   border-radius: 14px;
-  background:
-    linear-gradient(rgba(20, 20, 20, 0.45), rgba(20, 20, 20, 0.45)),
-    url("https://tile.openstreetmap.org/7/70/45.png");
-
-  background-size: cover;
-  background-position: center;
+  overflow: hidden;
   margin-bottom: 20px;
+}
+
+.dashboard-map {
+  width: 100%;
+  height: 100%;
 }
 
 .service-card button {
@@ -213,6 +220,7 @@
 }
 
 /* TABLETĂ */
+
 @media (max-width: 1024px) {
 
   .dashboard-content {
@@ -226,9 +234,11 @@
   .bottom-section {
     grid-template-columns: 1fr;
   }
+
 }
 
 /* MOBIL */
+
 @media (max-width: 700px) {
 
   .dashboard-page {
@@ -284,4 +294,5 @@
   .map-box {
     height: 200px;
   }
+
 }
