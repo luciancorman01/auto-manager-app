@@ -1,7 +1,15 @@
 import { NavLink } from "react-router-dom";
 import "./Sidebar.css";
+import { useUser } from "../context/UserContext";
 
 function Sidebar() {
+  const { user } = useUser();
+
+  const numeComplet = user?.nume_complet || "";
+  const displayName = numeComplet.length > 18
+    ? numeComplet.split(" ")[0]
+    : numeComplet || "...";
+
   return (
     <aside className="sidebar">
       <div className="logo">🚙 AutoCare</div>
@@ -45,8 +53,14 @@ function Sidebar() {
       </nav>
 
       <div className="user-box">
-        <div className="avatar"></div>
-        <span>username</span>
+        <div className="avatar">
+          {user?.poza_profil ? (
+            <img src={user.poza_profil} alt="avatar" />
+          ) : (
+            <span>👤</span>
+          )}
+        </div>
+        <span className="user-name">{displayName}</span>
       </div>
 
       <p className="footer-text">

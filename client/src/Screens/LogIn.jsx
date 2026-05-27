@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../api";
+import { useUser } from "../context/UserContext";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -9,6 +10,7 @@ function Login() {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+  const { refreshUser } = useUser();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -22,8 +24,7 @@ function Login() {
       });
 
       localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user", JSON.stringify(response.data.user));
-
+      await refreshUser();
       navigate("/dashboard");
     } catch (err) {
       setError(err.response?.data?.message || "Email sau parolă greșită.");

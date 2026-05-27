@@ -1,243 +1,275 @@
 import "./Dashboard.css";
-
 import Sidebar from "../components/Sidebar";
-
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import api from "../api";
 
 import {
   MapContainer,
   TileLayer,
   Marker,
-  Popup
+  Popup,
 } from "react-leaflet";
-
 import "leaflet/dist/leaflet.css";
 
+// Calculează câte zile mai sunt până la o dată
+function daysUntil(dateStr) {
+  if (!dateStr) return null;
+  const diff = new Date(dateStr) - new Date();
+  return Math.ceil(diff / (1000 * 60 * 60 * 24));
+}
+
+// Formatează zilele rămase într-un text lizibil
+function formatDaysLeft(days) {
+  if (days === null) return "Necompletat";
+  if (days < 0) return "Expirat";
+  if (days === 0) return "Expiră azi";
+  if (days < 30) return `${days} zile`;
+  const months = Math.round(days / 30);
+  return `${months} ${months === 1 ? "lună" : "luni"}`;
+}
+
+// Returnează clasa CSS pentru progress bar în funcție de zile
+function progressClass(days) {
+  if (days === null) return "";
+  if (days < 0) return "expired";
+  if (days <= 30) return "critical";
+  if (days <= 90) return "warning";
+  return "ok";
+}
+
+// Lățimea progress bar (max 365 zile = 100%)
+function progressWidth(days) {
+  if (days === null || days < 0) return "100%";
+  const pct = Math.min((days / 365) * 100, 100);
+  return `${pct}%`;
+}
+
 function Dashboard() {
+  const [vehicles, setVehicles] = useState([]);
+  const [alerts, setAlerts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [vehiclesRes, alertsRes] = await Promise.all([
+          api.get("/vehicles"),
+          api.get("/documents/alerts"),
+        ]);
+        setVehicles(vehiclesRes.data);
+        setAlerts(alertsRes.data);
+      } catch (err) {
+        console.error("Eroare la încărcarea dashboard-ului:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  // Găsește cel mai apropiat document de un anumit tip din toată flota
+  const getNextExpiry = (type) => {
+    let best = null;
+    for (const v of vehicles) {
+      const doc = v.documents?.find((d) => d.tip === type);
+      if (!doc) continue;
+      const days = daysUntil(doc.data_expirare);
+      if (best === null || days < best.days) {
+        best = { days, vehicle: v, doc };
+      }
+    }
+    return best;
+  };
+
+  const rcaNext = getNextExpiry("RCA");
+  const itpNext = getNextExpiry("ITP");
+  const rovNext = getNextExpiry("Rovinieta");
+
+  // Vehicule cu cel puțin un document expirat sau care expiră în 30 zile
+  const criticalVehicles = vehicles.filter((v) =>
+    v.documents?.some((d) => {
+      const days = daysUntil(d.data_expirare);
+      return days !== null && days <= 30;
+    })
+  );
+
+  // Top 5 acțiuni prioritare — sortate după zile rămase
+  const priorityActions = vehicles
+    .flatMap((v) =>
+      (v.documents || []).map((d) => ({
+        vehicle: v,
+        doc: d,
+        days: daysUntil(d.data_expirare),
+      }))
+    )
+    .filter((item) => item.days !== null && item.days <= 90)
+    .sort((a, b) => a.days - b.days)
+    .slice(0, 5);
+
+  const docLabel = { RCA: "Renew Insurance", ITP: "Renew ITP", Rovinieta: "Renew Rovinieta" };
 
   return (
     <div className="dashboard-page">
-
       <Sidebar />
 
       <main className="dashboard-content">
 
         <div className="dashboard-header">
-
           <h1>Home Dashboard</h1>
-
-          <div className="search-box">
-
-            <input
-              type="text"
-              placeholder="Search..."
-            />
-
-            <span>⌕</span>
-
-          </div>
-
         </div>
 
-        <section className="alerts">
+        {loading ? (
+          <p style={{ color: "#aaa" }}>Se încarcă datele...</p>
+        ) : (
+          <>
+            {/* ALERT CARDS */}
+            <section className="alerts">
 
-          <div className="alert-card">
-
-            <h3>Insurance Alert</h3>
-
-            <div className="progress">
-
-              <div className="progress-fill insurance"></div>
-
-            </div>
-
-            <p>Insurance expires</p>
-
-            <strong>40 days</strong>
-
-            <span className="warning">⚠️</span>
-
-          </div>
-
-          <div className="alert-card">
-
-            <h3>ITP Alert</h3>
-
-            <div className="progress">
-
-              <div className="progress-fill itp"></div>
-
-            </div>
-
-            <p>Next ITP due</p>
-
-            <strong>2 months</strong>
-
-            <span className="warning">⚠️</span>
-
-          </div>
-
-          <div className="alert-card">
-
-            <h3>Vigneta Alert</h3>
-
-            <div className="progress">
-
-              <div className="progress-fill vigneta"></div>
-
-            </div>
-
-            <p>Rovigneta expires</p>
-
-            <strong>71 days</strong>
-
-            <span className="warning">⚠️</span>
-
-          </div>
-
-        </section>
-
-        <section className="bottom-section">
-
-          <div className="fleet-card">
-
-            <h3>Fleet Overview</h3>
-
-            <div className="fleet-numbers">
-
-              <div>
-
-                <strong>5</strong>
-
-                <p>
-                  total
-                  <br />
-                  vehicles
-                </p>
-
+              {/* RCA */}
+              <div className="alert-card">
+                <h3>Insurance Alert</h3>
+                <div className="progress">
+                  <div
+                    className={`progress-fill ${progressClass(rcaNext?.days ?? null)}`}
+                    style={{ width: progressWidth(rcaNext?.days ?? null) }}
+                  />
+                </div>
+                {rcaNext ? (
+                  <>
+                    <p>{rcaNext.vehicle.marca} {rcaNext.vehicle.model}</p>
+                    <strong>{formatDaysLeft(rcaNext.days)}</strong>
+                  </>
+                ) : (
+                  <>
+                    <p>Insurance expires</p>
+                    <strong style={{ color: "#aaa" }}>Nicio mașină</strong>
+                  </>
+                )}
+                {rcaNext && rcaNext.days <= 30 && <span className="warning">⚠️</span>}
               </div>
 
-              <div>
-
-                <strong>2</strong>
-
-                <p>
-                  critical
-                  <br />
-                  vehicles
-                </p>
-
+              {/* ITP */}
+              <div className="alert-card">
+                <h3>ITP Alert</h3>
+                <div className="progress">
+                  <div
+                    className={`progress-fill ${progressClass(itpNext?.days ?? null)}`}
+                    style={{ width: progressWidth(itpNext?.days ?? null) }}
+                  />
+                </div>
+                {itpNext ? (
+                  <>
+                    <p>{itpNext.vehicle.marca} {itpNext.vehicle.model}</p>
+                    <strong>{formatDaysLeft(itpNext.days)}</strong>
+                  </>
+                ) : (
+                  <>
+                    <p>Next ITP due</p>
+                    <strong style={{ color: "#aaa" }}>Nicio mașină</strong>
+                  </>
+                )}
+                {itpNext && itpNext.days <= 30 && <span className="warning">⚠️</span>}
               </div>
 
-            </div>
+              {/* Rovinieta */}
+              <div className="alert-card">
+                <h3>Vigneta Alert</h3>
+                <div className="progress">
+                  <div
+                    className={`progress-fill ${progressClass(rovNext?.days ?? null)}`}
+                    style={{ width: progressWidth(rovNext?.days ?? null) }}
+                  />
+                </div>
+                {rovNext ? (
+                  <>
+                    <p>{rovNext.vehicle.marca} {rovNext.vehicle.model}</p>
+                    <strong>{formatDaysLeft(rovNext.days)}</strong>
+                  </>
+                ) : (
+                  <>
+                    <p>Rovinieta expires</p>
+                    <strong style={{ color: "#aaa" }}>Nicio mașină</strong>
+                  </>
+                )}
+                {rovNext && rovNext.days <= 30 && <span className="warning">⚠️</span>}
+              </div>
 
-            <div className="priority-bar"></div>
+            </section>
 
-            <h4>Top 3 priority actions:</h4>
+            {/* BOTTOM SECTION */}
+            <section className="bottom-section">
 
-            <ul className="actions">
+              {/* FLEET OVERVIEW */}
+              <div className="fleet-card">
+                <h3>Fleet Overview</h3>
 
-              <li>
+                <div className="fleet-numbers">
+                  <div>
+                    <strong>{vehicles.length}</strong>
+                    <p>total<br />vehicles</p>
+                  </div>
+                  <div>
+                    <strong>{criticalVehicles.length}</strong>
+                    <p>critical<br />vehicles</p>
+                  </div>
+                </div>
 
-                <span>1</span>
+                <div className="priority-bar" />
 
-                Volkswagen Golf 7:
-                Renew Insurance
+                <h4>Top priority actions:</h4>
 
-                <em>
-                  40 days remaining
-                </em>
+                {priorityActions.length === 0 ? (
+                  <p style={{ color: "#aaa", fontSize: "14px" }}>
+                    Nicio acțiune urgentă. Totul e în regulă! ✅
+                  </p>
+                ) : (
+                  <ul className="actions">
+                    {priorityActions.map((item, idx) => (
+                      <li key={`${item.vehicle.id}-${item.doc.tip}`}>
+                        <span>{idx + 1}</span>
+                        {item.vehicle.marca} {item.vehicle.model}: {docLabel[item.doc.tip] || item.doc.tip}
+                        <em>{formatDaysLeft(item.days)}</em>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
 
-              </li>
+              {/* SERVICE MAP */}
+              <div className="service-card">
+                <h3>Service:</h3>
 
-              <li>
+                <div className="map-box">
+                  <MapContainer
+                    center={[47.0722, 21.9214]}
+                    zoom={12}
+                    scrollWheelZoom={false}
+                    className="dashboard-map"
+                  >
+                    <TileLayer
+                      attribution='&copy; OpenStreetMap contributors'
+                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    <Marker position={[47.0722, 21.9214]}>
+                      <Popup>Auto Total Service</Popup>
+                    </Marker>
+                    <Marker position={[47.0550, 21.9330]}>
+                      <Popup>BMW Service Oradea</Popup>
+                    </Marker>
+                  </MapContainer>
+                </div>
 
-                <span>2</span>
+                <Link to="/service">
+                  <button>Book service</button>
+                </Link>
+              </div>
 
-                Volkswagen Arteon:
-                Renew ITP
-
-                <em>
-                  2 months remaining
-                </em>
-
-              </li>
-
-              <li>
-
-                <span>3</span>
-
-                Volkswagen Golf 7:
-                Renew Rovigneta
-
-                <em>
-                  70 days remaining
-                </em>
-
-              </li>
-
-            </ul>
-
-          </div>
-
-          {/* SERVICE */}
-
-          <div className="service-card">
-
-            <h3>Service:</h3>
-
-            <div className="map-box">
-
-              <MapContainer
-                center={[47.0722, 21.9214]}
-                zoom={12}
-                scrollWheelZoom={false}
-                className="dashboard-map"
-              >
-
-                <TileLayer
-                  attribution='&copy; OpenStreetMap contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-
-                <Marker
-                  position={[47.0722, 21.9214]}
-                >
-
-                  <Popup>
-                    Auto Total Service
-                  </Popup>
-
-                </Marker>
-
-                <Marker
-                  position={[47.0550, 21.9330]}
-                >
-
-                  <Popup>
-                    BMW Service Oradea
-                  </Popup>
-
-                </Marker>
-
-              </MapContainer>
-
-            </div>
-
-            <Link to="/service">
-
-              <button>
-                Book service
-              </button>
-
-            </Link>
-
-          </div>
-
-        </section>
+            </section>
+          </>
+        )}
 
       </main>
-
     </div>
   );
 }

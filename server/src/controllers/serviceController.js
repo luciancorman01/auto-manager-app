@@ -61,8 +61,31 @@ const createServiceEntry = async (req, res) => {
   const { vehicleId } = req.params;
   const { data, descriere, kilometri, cost_total } = req.body;
 
-  if (!data || !descriere || !kilometri || cost_total === undefined) {
+  if (!data || !descriere || kilometri === undefined || kilometri === null || cost_total === undefined) {
     return res.status(400).json({ message: "Toate câmpurile sunt obligatorii." });
+  }
+
+  // Validare dată
+  const serviceDate = new Date(data);
+  if (isNaN(serviceDate.getTime())) {
+    return res.status(400).json({ message: "Data serviciului nu este validă." });
+  }
+
+  // Validare descriere
+  if (String(descriere).trim().length < 3) {
+    return res.status(400).json({ message: "Descrierea trebuie să aibă minim 3 caractere." });
+  }
+
+  // Validare kilometri
+  const km = Number(kilometri);
+  if (isNaN(km) || !Number.isInteger(km) || km < 0) {
+    return res.status(400).json({ message: "Kilometrii trebuie să fie un număr întreg pozitiv." });
+  }
+
+  // Validare cost
+  const cost = Number(cost_total);
+  if (isNaN(cost) || cost < 0) {
+    return res.status(400).json({ message: "Costul total trebuie să fie un număr pozitiv." });
   }
 
   try {
@@ -72,10 +95,10 @@ const createServiceEntry = async (req, res) => {
     const entry = await prisma.serviceHistory.create({
       data: {
         vehicle_id: Number(vehicleId),
-        data: new Date(data),
-        descriere,
-        kilometri: Number(kilometri),
-        cost_total: Number(cost_total),
+        data: serviceDate,
+        descriere: String(descriere).trim(),
+        kilometri: km,
+        cost_total: cost,
       },
     });
 
@@ -89,6 +112,32 @@ const createServiceEntry = async (req, res) => {
 const updateServiceEntry = async (req, res) => {
   const { data, descriere, kilometri, cost_total } = req.body;
 
+  // Validare câmpuri dacă sunt trimise
+  if (data !== undefined) {
+    const serviceDate = new Date(data);
+    if (isNaN(serviceDate.getTime())) {
+      return res.status(400).json({ message: "Data serviciului nu este validă." });
+    }
+  }
+
+  if (descriere !== undefined && String(descriere).trim().length < 3) {
+    return res.status(400).json({ message: "Descrierea trebuie să aibă minim 3 caractere." });
+  }
+
+  if (kilometri !== undefined) {
+    const km = Number(kilometri);
+    if (isNaN(km) || !Number.isInteger(km) || km < 0) {
+      return res.status(400).json({ message: "Kilometrii trebuie să fie un număr întreg pozitiv." });
+    }
+  }
+
+  if (cost_total !== undefined) {
+    const cost = Number(cost_total);
+    if (isNaN(cost) || cost < 0) {
+      return res.status(400).json({ message: "Costul total trebuie să fie un număr pozitiv." });
+    }
+  }
+
   try {
     const entry = await prisma.serviceHistory.findFirst({
       where: { id: Number(req.params.id) },
@@ -99,14 +148,15 @@ const updateServiceEntry = async (req, res) => {
       return res.status(404).json({ message: "Intrarea nu a fost găsită." });
     }
 
+    const updateData = {};
+    if (data !== undefined) updateData.data = new Date(data);
+    if (descriere !== undefined) updateData.descriere = String(descriere).trim();
+    if (kilometri !== undefined) updateData.kilometri = Number(kilometri);
+    if (cost_total !== undefined) updateData.cost_total = Number(cost_total);
+
     const updated = await prisma.serviceHistory.update({
       where: { id: Number(req.params.id) },
-      data: {
-        data: data ? new Date(data) : undefined,
-        descriere,
-        kilometri: kilometri ? Number(kilometri) : undefined,
-        cost_total: cost_total !== undefined ? Number(cost_total) : undefined,
-      },
+      data: updateData,
     });
 
     res.json({ message: "Intrare actualizată!", entry: updated });

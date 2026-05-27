@@ -31,6 +31,7 @@ model Vehicle {
   nr_inmatriculare String
   vin              String    @unique
   an_fabricatie    Int
+  poza             String?
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
 

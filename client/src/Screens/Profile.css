@@ -51,24 +51,24 @@
   background: #22232f;
   border: 1px solid #9ba3d9;
   border-radius: 18px;
-  padding: 24px;
+  padding: 20px 24px;
   position: relative;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
 }
 
 .profile-card h2,
 .info-card h2 {
   color: #c6c3f2;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 400;
-  margin-bottom: 22px;
+  margin-bottom: 16px;
 }
 
 .edit-icon {
   position: absolute;
-  top: 22px;
-  right: 24px;
-  font-size: 22px;
+  top: 18px;
+  right: 22px;
+  font-size: 20px;
   color: #bfc5ff;
   cursor: pointer;
 }
@@ -76,77 +76,75 @@
 .profile-user {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 22px;
 }
 
 .profile-avatar {
-  width: 90px;
-  height: 90px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
   border: 1px solid #bfc5ff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 34px;
+  font-size: 28px;
+  flex-shrink: 0;
 }
 
 .profile-info h3 {
-  font-size: 32px;
+  font-size: 22px;
   font-weight: 400;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .profile-info p {
-  font-size: 22px;
+  font-size: 15px;
   color: #d9d9d9;
+}
+
+.profile-info small {
+  font-size: 12px;
+  color: #9ba3d9;
 }
 
 .profile-bottom {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 28px;
+  gap: 20px;
 }
 
 .info-card {
   background: #22232f;
   border: 1px solid #9ba3d9;
   border-radius: 18px;
-  padding: 22px;
-  min-height: 210px;
+  padding: 18px 22px;
+  min-height: 120px;
 }
 
 .contact-item {
   display: flex;
   align-items: center;
-  gap: 18px;
-  margin-bottom: 26px;
+  gap: 14px;
+  margin-bottom: 10px;
 }
 
 .contact-item span {
-  font-size: 17px;
+  font-size: 15px;
 }
 
 .contact-item p {
-  font-size: 17px;
+  font-size: 15px;
 }
 
 .preference-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 34px;
+  margin-bottom: 10px;
 }
 
 .preference-row p {
-  font-size: 17px;
-}
-
-.preference-row select {
-  background: transparent;
-  border: none;
-  color: #bfc5ff;
-  font-size: 17px;
-  outline: none;
+  font-size: 15px;
 }
 
 .logout-container {
