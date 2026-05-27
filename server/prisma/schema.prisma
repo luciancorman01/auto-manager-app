@@ -37,8 +37,22 @@ model Vehicle {
   user             User            @relation(fields: [user_id], references: [id], onDelete: Cascade)
   documents        Document[]
   serviceHistory   ServiceHistory[]
+  photos           VehiclePhoto[]
 
   @@map("vehicles")
+}
+
+model VehiclePhoto {
+  id          Int      @id @default(autoincrement())
+  vehicle_id  Int
+  image_url   String
+  is_primary  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  vehicle     Vehicle  @relation(fields: [vehicle_id], references: [id], onDelete: Cascade)
+
+  @@map("vehicle_photos")
 }
 
 
@@ -57,6 +71,7 @@ model Document {
 
   @@map("documents")
 }
+
 enum DocumentType {
   RCA
   ITP

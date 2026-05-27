@@ -1,7 +1,11 @@
 import { NavLink } from "react-router-dom";
-import "./Sidebar.css";
+import "./sidebar.css";
 
 function Sidebar() {
+  const cachedUser = localStorage.getItem("user");
+  const user = cachedUser ? JSON.parse(cachedUser) : null;
+  const displayName = user?.nume_complet || user?.email || "User";
+
   return (
     <aside className="sidebar">
       <div className="logo">🚙 AutoCare</div>
@@ -46,7 +50,7 @@ function Sidebar() {
 
       <div className="user-box">
         <div className="avatar"></div>
-        <span>username</span>
+        <span>{displayName}</span>
       </div>
 
       <p className="footer-text">

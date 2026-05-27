@@ -1,133 +1,120 @@
 import "./Profile.css";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../components/sidebar";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import api from "../api/client";
 
 function Profile() {
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const { data } = await api.get("/auth/me");
+        setUser(data);
+        localStorage.setItem("user", JSON.stringify(data));
+      } catch {
+        const cached = localStorage.getItem("user");
+        if (cached) setUser(JSON.parse(cached));
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
 
   return (
     <div className="profile-page">
-
       <Sidebar />
 
       <main className="profile-content">
-
-        {/* HEADER */}
-
         <div className="profile-header">
-
           <h1>My Profile</h1>
 
           <div className="search-box">
             <input type="text" placeholder="Search..." />
             <span>⌕</span>
           </div>
-
         </div>
 
-        {/* USER CARD */}
+        {loading ? (
+          <p>Loading profile...</p>
+        ) : (
+          <>
+            <section className="profile-card">
+              <div className="edit-icon">✎</div>
 
-        <section className="profile-card">
+              <h2>User Account Details</h2>
 
-          <div className="edit-icon">
-            ✎
-          </div>
+              <div className="profile-user">
+                <div className="profile-avatar">👤</div>
 
-          <h2>User Account Details</h2>
+                <div className="profile-info">
+                  <h3>{user?.nume_complet || "User"}</h3>
+                  <p>{user?.email || "—"}</p>
+                </div>
+              </div>
+            </section>
 
-          <div className="profile-user">
+            <section className="profile-bottom">
+              <div className="info-card">
+                <h2>Contact Informations</h2>
 
-            <div className="profile-avatar">
-              👤
-            </div>
+                <div className="contact-item">
+                  <span>✉</span>
+                  <p>{user?.email || "—"}</p>
+                </div>
 
-            <div className="profile-info">
+                <div className="contact-item">
+                  <span>📅</span>
+                  <p>
+                    Member since{" "}
+                    {user?.createdAt
+                      ? new Date(user.createdAt).toLocaleDateString("ro-RO")
+                      : "—"}
+                  </p>
+                </div>
+              </div>
 
-              <h3>User Name</h3>
+              <div className="info-card">
+                <h2>Account Preferences</h2>
 
-              <p>username@gmail.com</p>
+                <div className="preference-row">
+                  <p>Allow Reminders</p>
 
-            </div>
+                  <label className="switch">
+                    <input type="checkbox" defaultChecked />
+                    <span className="slider"></span>
+                  </label>
+                </div>
 
-          </div>
+                <div className="preference-row">
+                  <p>Account Language</p>
 
-        </section>
-
-        {/* BOTTOM */}
-
-        <section className="profile-bottom">
-
-          {/* CONTACT */}
-
-          <div className="info-card">
-
-            <h2>Contact Informations</h2>
-
-            <div className="contact-item">
-              <span>📞</span>
-              <p>+40 7xx xxx xxx</p>
-            </div>
-
-            <div className="contact-item">
-              <span>✉</span>
-              <p>username@gmail.com</p>
-            </div>
-
-            <div className="contact-item">
-              <span>📍</span>
-              <p>strada x-ulescu, nr. 10</p>
-            </div>
-
-          </div>
-
-          {/* PREFERENCES */}
-
-          <div className="info-card">
-
-            <h2>Account Preferences</h2>
-
-            <div className="preference-row">
-
-              <p>Allow Reminders</p>
-
-              <label className="switch">
-
-                <input type="checkbox" />
-
-                <span className="slider"></span>
-
-              </label>
-
-            </div>
-
-            <div className="preference-row">
-
-              <p>Account Language</p>
-
-              <select>
-
-                <option>English</option>
-
-                <option>Romanian</option>
-
-              </select>
-
-            </div>
-
-          </div>
-
-        </section>
-
-        {/* LOGOUT */}
+                  <select defaultValue="English">
+                    <option>English</option>
+                    <option>Romanian</option>
+                  </select>
+                </div>
+              </div>
+            </section>
+          </>
+        )}
 
         <div className="logout-container">
-
-          <button className="logout-btn">
+          <button className="logout-btn" onClick={handleLogout}>
             Log out
           </button>
-
         </div>
-
       </main>
-
     </div>
   );
 }

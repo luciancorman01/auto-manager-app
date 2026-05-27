@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api/client";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -14,16 +14,25 @@ function Login() {
     setError("");
 
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/login", {
+      const response = await api.post("/auth/login", {
         email,
-        password,
+        parola: password,
       });
 
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
 
       navigate("/dashboard");
     } catch (err) {
-      setError("Email sau parolă greșită.");
+      if (!err.response) {
+        setError(
+          "Serverul nu răspunde. Pornește backend-ul: npm run server (din folderul server)."
+        );
+        return;
+      }
+      setError(
+        err.response?.data?.message || "Email sau parolă greșită."
+      );
     }
   };
 
