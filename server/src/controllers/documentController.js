@@ -74,6 +74,26 @@ const createDocument = async (req, res) => {
     return res.status(400).json({ message: "Tipul și data expirării sunt obligatorii." });
   }
 
+  // Validare tip document
+  const VALID_TYPES = ["RCA", "ITP", "Rovinieta"];
+  if (!VALID_TYPES.includes(tip)) {
+    return res.status(400).json({ message: `Tipul documentului trebuie să fie unul din: ${VALID_TYPES.join(", ")}.` });
+  }
+
+  // Validare dată expirare
+  const expDate = new Date(data_expirare);
+  if (isNaN(expDate.getTime())) {
+    return res.status(400).json({ message: "Data expirării nu este validă." });
+  }
+
+  // Validare pret_platit dacă e trimis
+  if (pret_platit !== undefined && pret_platit !== null && pret_platit !== "") {
+    const pret = Number(pret_platit);
+    if (isNaN(pret) || pret < 0) {
+      return res.status(400).json({ message: "Prețul plătit trebuie să fie un număr pozitiv." });
+    }
+  }
+
   try {
     const owns = await verifyVehicleOwnership(vehicleId, req.user.id);
     if (!owns) return res.status(403).json({ message: "Acces interzis." });
@@ -82,9 +102,9 @@ const createDocument = async (req, res) => {
       data: {
         vehicle_id: Number(vehicleId),
         tip,
-        data_expirare: new Date(data_expirare),
-        pret_platit: pret_platit ? Number(pret_platit) : null,
-        companie,
+        data_expirare: expDate,
+        pret_platit: (pret_platit !== undefined && pret_platit !== null && pret_platit !== "") ? Number(pret_platit) : null,
+        companie: companie || null,
       },
     });
 
@@ -98,6 +118,30 @@ const createDocument = async (req, res) => {
 const updateDocument = async (req, res) => {
   const { tip, data_expirare, pret_platit, companie } = req.body;
 
+  // Validare tip dacă e trimis
+  if (tip !== undefined) {
+    const VALID_TYPES = ["RCA", "ITP", "Rovinieta"];
+    if (!VALID_TYPES.includes(tip)) {
+      return res.status(400).json({ message: `Tipul documentului trebuie să fie unul din: ${VALID_TYPES.join(", ")}.` });
+    }
+  }
+
+  // Validare dată dacă e trimisă
+  if (data_expirare !== undefined) {
+    const expDate = new Date(data_expirare);
+    if (isNaN(expDate.getTime())) {
+      return res.status(400).json({ message: "Data expirării nu este validă." });
+    }
+  }
+
+  // Validare pret dacă e trimis
+  if (pret_platit !== undefined && pret_platit !== null && pret_platit !== "") {
+    const pret = Number(pret_platit);
+    if (isNaN(pret) || pret < 0) {
+      return res.status(400).json({ message: "Prețul plătit trebuie să fie un număr pozitiv." });
+    }
+  }
+
   try {
     const document = await prisma.document.findFirst({
       where: { id: Number(req.params.id) },
@@ -108,14 +152,15 @@ const updateDocument = async (req, res) => {
       return res.status(404).json({ message: "Documentul nu a fost găsit." });
     }
 
+    const data = {};
+    if (tip !== undefined) data.tip = tip;
+    if (data_expirare !== undefined) data.data_expirare = new Date(data_expirare);
+    if (pret_platit !== undefined) data.pret_platit = (pret_platit !== null && pret_platit !== "") ? Number(pret_platit) : null;
+    if (companie !== undefined) data.companie = companie;
+
     const updated = await prisma.document.update({
       where: { id: Number(req.params.id) },
-      data: {
-        tip,
-        data_expirare: data_expirare ? new Date(data_expirare) : undefined,
-        pret_platit: pret_platit ? Number(pret_platit) : undefined,
-        companie,
-      },
+      data,
     });
 
     res.json({ message: "Document actualizat!", document: updated });

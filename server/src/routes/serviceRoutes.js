@@ -1,6 +1,5 @@
 // src/routes/serviceRoutes.js
 const express = require("express");
-const router = express.Router({ mergeParams: true });
 const {
   getServiceHistory,
   getServiceStats,
@@ -10,19 +9,18 @@ const {
 } = require("../controllers/serviceController");
 const { protect } = require("../middleware/authMiddleware");
 
+// Router nested: /api/vehicles/:vehicleId/service
+const router = express.Router({ mergeParams: true });
 router.use(protect);
-
-// Nested sub /api/vehicles/:vehicleId/service
 router.get("/", getServiceHistory);
 router.get("/stats", getServiceStats);
 router.post("/", createServiceEntry);
 
-module.exports = router;
-
-// Router separat pentru /api/service
+// Router root: /api/service
 const rootRouter = express.Router();
 rootRouter.use(protect);
 rootRouter.put("/:id", updateServiceEntry);
 rootRouter.delete("/:id", deleteServiceEntry);
 
+module.exports = router;
 module.exports.rootRouter = rootRouter;

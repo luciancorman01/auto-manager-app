@@ -19,8 +19,24 @@ const register = async (req, res) => {
     return res.status(400).json({ message: "Toate câmpurile sunt obligatorii." });
   }
 
+  // Validare nume
+  if (String(nume_complet).trim().length < 3) {
+    return res.status(400).json({ message: "Numele complet trebuie să aibă minim 3 caractere." });
+  }
+
+  // Validare email format
+  const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!EMAIL_REGEX.test(String(email).trim())) {
+    return res.status(400).json({ message: "Adresa de email nu este validă." });
+  }
+
+  // Validare parolă
+  if (String(parola).length < 6) {
+    return res.status(400).json({ message: "Parola trebuie să aibă minim 6 caractere." });
+  }
+
   try {
-    const userExistent = await prisma.user.findUnique({ where: { email } });
+    const userExistent = await prisma.user.findUnique({ where: { email: String(email).trim().toLowerCase() } });
     if (userExistent) {
       return res.status(409).json({ message: "Email-ul este deja folosit." });
     }
@@ -28,7 +44,12 @@ const register = async (req, res) => {
     const hashedParola = await bcrypt.hash(parola, 10);
 
     const user = await prisma.user.create({
-      data: { nume_complet, email, parola: hashedParola, poza_profil },
+      data: {
+        nume_complet: String(nume_complet).trim(),
+        email: String(email).trim().toLowerCase(),
+        parola: hashedParola,
+        poza_profil: poza_profil || null,
+      },
       select: { id: true, nume_complet: true, email: true, poza_profil: true, createdAt: true },
     });
 
@@ -48,8 +69,13 @@ const login = async (req, res) => {
     return res.status(400).json({ message: "Email și parola sunt obligatorii." });
   }
 
+  const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!EMAIL_REGEX.test(String(email).trim())) {
+    return res.status(400).json({ message: "Adresa de email nu este validă." });
+  }
+
   try {
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = await prisma.user.findUnique({ where: { email: String(email).trim().toLowerCase() } });
     if (!user) {
       return res.status(401).json({ message: "Email sau parolă incorectă." });
     }
