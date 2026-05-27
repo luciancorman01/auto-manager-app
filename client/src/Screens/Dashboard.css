@@ -1,0 +1,298 @@
+.dashboard-page {
+  min-height: 100vh;
+  width: 100%;
+  background: #000;
+  color: white;
+  display: flex;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.dashboard-content {
+  flex: 1;
+  width: calc(100% - 230px);
+  padding: 48px 56px;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 42px;
+}
+
+.dashboard-header h1 {
+  font-size: 32px;
+  font-weight: 400;
+  margin: 0;
+}
+
+.search-box {
+  width: 320px;
+  height: 34px;
+  background: #6c7086;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+}
+
+.search-box input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+}
+
+.search-box input::placeholder {
+  color: #d3d3d3;
+}
+
+.alerts {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+.alert-card,
+.fleet-card,
+.service-card {
+  background: #22232e;
+  border: 1px solid #9ba3d9;
+  border-radius: 16px;
+  box-shadow: 0 0 22px rgba(60, 80, 255, 0.2);
+}
+
+.alert-card {
+  min-height: 170px;
+  text-align: center;
+  padding: 20px;
+}
+
+.alert-card h3,
+.fleet-card h3,
+.service-card h3 {
+  font-weight: 400;
+  margin: 0 0 20px;
+}
+
+.progress {
+  height: 12px;
+  background: #4b4d5d;
+  border-radius: 20px;
+  margin-bottom: 22px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #26338f;
+  border-radius: 20px;
+}
+
+.insurance {
+  width: 88%;
+}
+
+.itp {
+  width: 75%;
+}
+
+.vigneta {
+  width: 67%;
+}
+
+.alert-card p {
+  margin: 0;
+  font-size: 15px;
+}
+
+.alert-card strong {
+  display: block;
+  font-size: 19px;
+  margin-top: 6px;
+}
+
+.warning {
+  display: block;
+  margin-top: 8px;
+}
+
+.bottom-section {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+  margin-top: 36px;
+}
+
+.fleet-card,
+.service-card {
+  min-height: 360px;
+  padding: 28px;
+}
+
+.fleet-numbers {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+}
+
+.fleet-numbers strong {
+  font-size: 52px;
+  font-weight: 400;
+}
+
+.fleet-numbers p {
+  margin-top: 0;
+  font-size: 18px;
+}
+
+.priority-bar {
+  height: 34px;
+  border-radius: 20px;
+  background: linear-gradient(
+    90deg,
+    #45ad29,
+    #d5d000,
+    #ff1e00
+  );
+  margin: 24px 0;
+}
+
+.fleet-card h4 {
+  font-weight: 400;
+  font-size: 17px;
+}
+
+.actions {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+}
+
+.actions li {
+  margin-bottom: 14px;
+}
+
+.actions span {
+  background: #aaa;
+  color: #222;
+  border-radius: 50%;
+  padding: 2px 6px;
+  margin-right: 8px;
+}
+
+.actions em {
+  color: #b8b8b8;
+  font-style: normal;
+  float: right;
+}
+
+/* MAP */
+
+.map-box {
+  height: 235px;
+  border: 1px solid #9ba3d9;
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.dashboard-map {
+  width: 100%;
+  height: 100%;
+}
+
+.service-card button {
+  display: block;
+  margin: 0 auto;
+  padding: 9px 22px;
+  border-radius: 20px;
+  border: 1px solid #8fa0ff;
+  background: #596082;
+  color: white;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* TABLETĂ */
+
+@media (max-width: 1024px) {
+
+  .dashboard-content {
+    padding: 36px 32px;
+  }
+
+  .alerts {
+    grid-template-columns: 1fr;
+  }
+
+  .bottom-section {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+/* MOBIL */
+
+@media (max-width: 700px) {
+
+  .dashboard-page {
+    flex-direction: column;
+  }
+
+  .dashboard-content {
+    width: 100%;
+    padding: 24px 18px;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 28px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 28px;
+  }
+
+  .search-box {
+    width: 100%;
+  }
+
+  .alert-card,
+  .fleet-card,
+  .service-card {
+    width: 100%;
+  }
+
+  .fleet-card,
+  .service-card {
+    min-height: auto;
+    padding: 22px;
+  }
+
+  .fleet-numbers strong {
+    font-size: 42px;
+  }
+
+  .actions li {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .actions em {
+    float: none;
+  }
+
+  .map-box {
+    height: 200px;
+  }
+
+}
