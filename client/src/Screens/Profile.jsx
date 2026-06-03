@@ -17,7 +17,9 @@ function Profile() {
     return (
       <div className="profile-page">
         <Sidebar />
-        <main className="profile-content"><p>Se încarcă profilul...</p></main>
+        <main className="profile-content">
+          <p>Loading profile...</p>
+        </main>
       </div>
     );
   }
@@ -26,7 +28,6 @@ function Profile() {
     <div className="profile-page">
       <Sidebar />
       <main className="profile-content">
-
         <div className="profile-header">
           <h1>My Profile</h1>
           <div className="search-box">
@@ -42,15 +43,17 @@ function Profile() {
             <div className="profile-avatar">
               {user?.poza_profil ? (
                 <img src={user.poza_profil} alt="avatar" />
-              ) : "👤"}
+              ) : (
+                "👤"
+              )}
             </div>
             <div className="profile-info">
               <h3>{user?.nume_complet || "—"}</h3>
               <p>{user?.email || "—"}</p>
               <small>
-                Cont creat:{" "}
+                Account created:{" "}
                 {user?.createdAt
-                  ? new Date(user.createdAt).toLocaleDateString("ro-RO")
+                  ? new Date(user.createdAt).toLocaleDateString("en-GB")
                   : "—"}
               </small>
             </div>
@@ -59,21 +62,10 @@ function Profile() {
 
         <section className="profile-bottom">
           <div className="info-card">
-            <h2>Contact Informations</h2>
+            <h2>Contact Information</h2>
             <div className="contact-item">
               <span>✉</span>
               <p>{user?.email || "—"}</p>
-            </div>
-          </div>
-
-          <div className="info-card">
-            <h2>Account Preferences</h2>
-            <div className="preference-row">
-              <p>Allow Reminders</p>
-              <label className="switch">
-                <input type="checkbox" />
-                <span className="slider"></span>
-              </label>
             </div>
           </div>
         </section>
@@ -83,7 +75,6 @@ function Profile() {
             Log out
           </button>
         </div>
-
       </main>
     </div>
   );

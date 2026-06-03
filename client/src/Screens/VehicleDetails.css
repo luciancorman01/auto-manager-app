@@ -180,7 +180,9 @@ select option[disabled] {
   align-items: center;
   justify-content: center;
   background: #1a1b24;
-  transition: border-color 0.2s, background 0.2s;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
 }
 
 .image-upload-area:hover {
@@ -230,4 +232,42 @@ select option[disabled] {
 
 .remove-image-btn:hover {
   background: #e74c3c22;
+}
+
+/* ERROR BANNER */
+
+.error-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #2d0f0f;
+  border: 1px solid #e74c3c;
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  color: #ff6b6b;
+  font-size: 15px;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.error-banner-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+  color: #e74c3c;
+}
+
+.error-banner-close {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: #e74c3c;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 4px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.error-banner-close:hover {
+  color: #ff6b6b;
 }

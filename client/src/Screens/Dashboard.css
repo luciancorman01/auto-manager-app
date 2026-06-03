@@ -70,7 +70,12 @@
   padding: 20px;
 }
 
-.alert-card h3,
+.alert-card h3 {
+  font-weight: 400;
+  margin: 0;
+  padding-bottom: 16px;
+}
+
 .fleet-card h3,
 .service-card h3 {
   font-weight: 400;
@@ -81,8 +86,9 @@
   height: 12px;
   background: #4b4d5d;
   border-radius: 20px;
-  margin-bottom: 22px;
   overflow: hidden;
+  margin-bottom: 16px;
+  position: relative;
 }
 
 .progress-fill {
@@ -90,6 +96,9 @@
   background: #26338f;
   border-radius: 20px;
   transition: width 0.4s ease;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 /* Clase dinamice pentru starea documentelor */
@@ -117,10 +126,10 @@
 .alert-card strong {
   display: block;
   font-size: 19px;
-  margin-top: 6px;
+  margin-top: 0;
 }
 
-.warning {
+.alert-warning-icon {
   display: block;
   margin-top: 8px;
 }
@@ -158,12 +167,7 @@
 .priority-bar {
   height: 34px;
   border-radius: 20px;
-  background: linear-gradient(
-    90deg,
-    #45ad29,
-    #d5d000,
-    #ff1e00
-  );
+  background: linear-gradient(90deg, #45ad29, #d5d000, #ff1e00);
   margin: 24px 0;
 }
 
@@ -228,7 +232,6 @@
 /* TABLETĂ */
 
 @media (max-width: 1024px) {
-
   .dashboard-content {
     padding: 36px 32px;
   }
@@ -240,13 +243,11 @@
   .bottom-section {
     grid-template-columns: 1fr;
   }
-
 }
 
 /* MOBIL */
 
 @media (max-width: 700px) {
-
   .dashboard-page {
     flex-direction: column;
   }
@@ -300,5 +301,4 @@
   .map-box {
     height: 200px;
   }
-
 }

@@ -19,11 +19,11 @@ function Register() {
     setError("");
 
     if (password !== confirmPassword) {
-      setError("Parolele nu coincid.");
+      setError("Passwords do not match.");
       return;
     }
     if (password.length < 6) {
-      setError("Parola trebuie să aibă minim 6 caractere.");
+      setError("Password must be at least 6 characters.");
       return;
     }
 
@@ -40,7 +40,9 @@ function Register() {
       await refreshUser();
       navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.message || "Eroare la înregistrare.");
+      setError(
+        err.response?.data?.message || "Registration failed. Please try again.",
+      );
     } finally {
       setLoading(false);
     }
@@ -85,7 +87,7 @@ function Register() {
           {error && <p className="error-message">{error}</p>}
 
           <button type="submit" disabled={loading}>
-            {loading ? "Se creează contul..." : "Register"}
+            {loading ? "Creating account..." : "Register"}
           </button>
         </form>
 

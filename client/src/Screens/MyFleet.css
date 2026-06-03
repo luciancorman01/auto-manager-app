@@ -83,6 +83,7 @@
   border-radius: 18px;
   overflow: hidden;
   box-shadow: 0 0 22px rgba(60, 80, 255, 0.2);
+  position: relative;
 }
 
 .car-card img {
@@ -123,9 +124,53 @@
   cursor: pointer;
 }
 
+.card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 20px 20px;
+  gap: 10px;
+}
+
+.edit-btn {
+  width: 140px;
+  height: 52px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(90deg, #596082, #26338f);
+  color: white;
+  font-size: 16px;
+  font-family: Georgia, "Times New Roman", serif;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.edit-btn:hover {
+  opacity: 0.85;
+}
+
+.delete-btn {
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 10px;
+  background: #e74c3c;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+
+.delete-btn:hover {
+  background: #c0392b;
+}
+
 /* TABLETĂ */
 @media (max-width: 1024px) {
-
   .fleet-content {
     padding: 36px 28px;
   }
@@ -137,7 +182,6 @@
 
 /* MOBIL */
 @media (max-width: 700px) {
-
   .fleet-page {
     flex-direction: column;
   }
