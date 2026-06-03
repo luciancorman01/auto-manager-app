@@ -27,7 +27,7 @@ function Login() {
       await refreshUser();
       navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.message || "Email sau parolă greșită.");
+      setError(err.response?.data?.message || "Invalid email or password.");
     } finally {
       setLoading(false);
     }
@@ -58,7 +58,7 @@ function Login() {
           {error && <p className="error-message">{error}</p>}
 
           <button type="submit" disabled={loading}>
-            {loading ? "Se conectează..." : "Log in"}
+            {loading ? "Connecting..." : "Log in"}
           </button>
         </form>
 
